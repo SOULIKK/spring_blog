@@ -1,6 +1,7 @@
 package com.soulikk.spring_blog.model.entity;
 
 
+import com.soulikk.spring_blog.model.dto.PostRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,4 +25,14 @@ public class Post {
     @Column(nullable = false)
     private Long userId;
 
+    public Post(PostRequestDto requestDto, Long userId) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.userId = userId;
+    }
+
+    public void update(PostRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+    }
 }
