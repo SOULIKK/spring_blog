@@ -8,6 +8,7 @@ import com.soulikk.spring_blog.security.UserDetailsImpl;
 import com.soulikk.spring_blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +23,10 @@ public class PostController {
 
 
     // 리스트 조회
-    @GetMapping("/")
-    public List<Post> getList() {
-        return postRepository.findAll();
-    }
+    // @GetMapping("/")
+    // public List<Post> getList() {
+    //     return postRepository.findAll();
+    // }
 
 
     // 유저별 리스트 조회
