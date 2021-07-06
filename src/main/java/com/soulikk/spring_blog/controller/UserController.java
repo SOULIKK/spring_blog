@@ -2,28 +2,25 @@ package com.soulikk.spring_blog.controller;
 
 import com.soulikk.spring_blog.model.dto.SignupRequestDto;
 import com.soulikk.spring_blog.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/login")
-    public String login() {
+    public String loginPage() {
         return "login";
     }
+
 
     @GetMapping("/login/error")
     public String loginError(Model model) {
@@ -31,12 +28,14 @@ public class UserController {
         return "login";
     }
 
+    // 회원가입 페이지
     @GetMapping("/signup")
     public String signup() {
         return "signup";
     }
 
-    @PostMapping("/user/signup")
+    // 회원가입 처리
+    @PostMapping("/signup")
     public String registerUser(SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
         return "redirect:/";

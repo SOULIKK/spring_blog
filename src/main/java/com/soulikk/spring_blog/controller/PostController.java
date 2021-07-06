@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api")
 public class PostController {
 
     private final PostRepository postRepository;
@@ -23,43 +24,45 @@ public class PostController {
 
 
     // 리스트 조회
-    // @GetMapping("/")
-    // public List<Post> getList() {
-    //     return postRepository.findAll();
-    // }
+//     @GetMapping("/")
+//     public List<Post> getList() {
+//         return postRepository.findAll();
+//     }
 
 
     // 유저별 리스트 조회
-     @GetMapping("/api/list")
+     @GetMapping("/list")
      public List<Post> getList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getId();
         return postService.getPosts(userId);
      }
 
 
-    // 상세페이지 조회
-    @GetMapping("/api/post/{id}")
-    public Optional<Post> getPost(@PathVariable Long id) {
-        return postRepository.findById(id);
-    }
-
-
     // 작성
-    @PostMapping("/api/post")
+    @PostMapping("/post")
     public Post writePost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getId();
         return postService.writePost(requestDto, userId);
     }
 
+
+    // 상세페이지 조회
+    @GetMapping("/post/{id}")
+    public Optional<Post> getPost(@PathVariable Long id) {
+        return postRepository.findById(id);
+    }
+
+
+
     // 수정
-    @PostMapping("/api/uptPost/{id}")
+    @PostMapping("/uptPost/{id}")
     public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
         postService.updatePost(id, requestDto);
         return id;
     }
 
     // 삭제
-    @DeleteMapping("/api/delpost/{id}")
+    @DeleteMapping("/delpost/{id}")
     public Long deletePost(@PathVariable Long id) {
         postRepository.deleteById(id);
         return id;

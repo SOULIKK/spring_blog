@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>List</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -26,6 +26,7 @@
         height: 100%;
         overflow: auto;
     }
+
 </style>
 <body>
 <div>
@@ -33,35 +34,30 @@
         <div class="text-white">KMS BLOG</div>
     </nav>
     <div class="content-wrapper">
-        <div class="content col-lg-6 m-auto bg-white px-4">
-            <h3 class="text-center fw-bold py-4">로그인</h3>
-            <br>
-            <div class="form-group my-3">
-                <label>ID</label>
-                <input class="form-control" type="text" autocomplete="off">
+        <div class="content col-lg-8 m-auto bg-white p-4">
+
+            <div id="contents">
+
+                <form action="/api/post" method="POST">
+                    <h2 class="fw-bold text-center">포스트 작성</h2>
+                    <div>
+                        <label>제목</label>
+                        <input class="form-control" type="text" name="title" id="title">
+                    </div>
+                    <br>
+                    <div>
+                        <label>내용</label>
+                        <textarea class="form-control" name="content" id="content" rows="12"></textarea>
+                    </div>
+                    <br>
+                    <div>
+                        <button class="btn btn-primary w-100" type="submit">저장</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group my-3">
-                <label>Password</label>
-                <input class="form-control" type="password" autocomplete="off">
-            </div>
-            <br>
-            <div class="form-group my-3">
-                <button class="btn btn-primary w-100 my-2" onclick="login()">로그인</button>
-                <button class="btn btn-outline-primary w-100 my-2" onclick="signup()">회원가입</button>
-            </div>
+
         </div>
     </div>
 </div>
-<script>
-
-    function login() {
-        alert('로그인');
-    }
-
-    function signup() {
-        location.href = "/signup";
-    }
-
-</script>
 </body>
 </html>
