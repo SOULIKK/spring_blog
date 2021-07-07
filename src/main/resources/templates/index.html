@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
+    <!--  icon  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 
 </head>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+    * {
+        font-family: 'Do Hyeon', sans-serif;
+    }
+
     .content-wrapper {
         height: 93vh;
         background: #f5f5f5;
@@ -32,35 +40,38 @@
 </style>
 <body>
 <div>
-    <nav class="bg-dark d-flex align-items-center px-3">
+    <nav class="bg-dark d-flex align-items-center px-3 justify-content-between">
         <div class="text-white">KMS BLOG</div>
+        <button type="button" class="btn border-white text-white" onclick="location.href='/api/write'">작성</button>
     </nav>
     <div class="content-wrapper">
         <div class="content col-lg-8 m-auto bg-white p-4">
 
             <div id="contents" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 p-3">
+<!--                <h2 th:text="${username}"></h2> 님 안녕하세요 !!-->
 
-                <!-- for -->
-                <div class="card-wrapper mb-2">
+                <div th:each="post : ${posts}" class="card-wrapper mb-2">
                     <div class="card shadow-sm">
+
                         <div class="card-body">
-                            <h3 class="text-center fw-bold mb-3">test</h3>
-                            <div class="d-flex justify-content-between my-2">
-                                <div class="text-primary">작성자</div>
-                                <div class="fw-bold">test</div>
-                            </div>
-                            <div class="d-flex justify-content-between my-2">
-                                <div class="text-primary">작성일</div>
-                                <div class="fw-bold">07-06 10:58</div>
-                            </div>
+                            <h3 class="text-center fw-bold mb-3" th:text="${post.title}"></h3>
+<!--                            <div class="d-flex justify-content-between my-2">-->
+<!--                                <div class="text-primary">작성자</div>-->
+<!--                                <div class="fw-bold">test</div>-->
+<!--                            </div>-->
+<!--                            <div class="d-flex justify-content-between my-2">-->
+<!--                                <div class="text-primary">작성일</div>-->
+<!--                                <div class="fw-bold">07-06 10:58</div>-->
+<!--                            </div>-->
                             <div class="d-flex justify-content-between mt-2">
-                                <button type="button" class="btn btn-dark w-100" onclick="deleteMemo()">
+                                <button type="button" class="btn btn-dark w-100" th:onclick="'deletePost('+ ${post.id} + ')'">
                                     삭제
                                 </button>
                                 &nbsp;
-                                <button type="button" class="btn btn-outline-primary w-100" onclick="getDetailPage()">
+<!--                                <button type="button" class="btn btn-outline-primary w-100" th:onclick="'getDetailPage('+ ${post.id} + ')'">-->
+                                <a type="button" class="btn btn-outline-primary w-100" th:href="@{/api/detail(id=${post.id})}">
                                     자세히
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -71,5 +82,27 @@
         </div>
     </div>
 </div>
+
+<script>
+
+
+    function deletePost(id) {
+        $.ajax({
+            type: "DELETE",
+            url: `/api/post/${id}`,
+            success: function (res) {
+                alert("삭제 성공");
+                location.reload();
+            }
+        })
+    }
+
+
+    function getDetailPage(_id) {
+        location.href = '/api/detail/'+_id;
+    }
+</script>
+
+
 </body>
 </html>

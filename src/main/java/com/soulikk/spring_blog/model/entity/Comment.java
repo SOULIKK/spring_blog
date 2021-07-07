@@ -1,13 +1,15 @@
 package com.soulikk.spring_blog.model.entity;
 
+
+import com.soulikk.spring_blog.model.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+
 import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 public class Comment extends Timestamped {
 
@@ -16,8 +18,24 @@ public class Comment extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private String comment;
+    private Long postId;
 
     @Column(nullable = false)
-    private Long userId;
+    private String username;
+
+    @Column(nullable = false)
+    private String commentContent;
+
+    public Comment(CommentRequestDto commentRequestDto) {
+        this.id = commentRequestDto.getId();
+        this.postId = commentRequestDto.getPostId();
+        this.username = commentRequestDto.getUsername();
+        this.commentContent = commentRequestDto.getCommentContent();
+    }
+
+    public void updateComment(CommentRequestDto commentRequestDto) {
+        this.id = commentRequestDto.getId();
+        this.username = commentRequestDto.getUsername();
+        this.commentContent = commentRequestDto.getCommentContent();
+    }
 }

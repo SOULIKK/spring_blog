@@ -8,14 +8,12 @@ import com.soulikk.spring_blog.security.UserDetailsImpl;
 import com.soulikk.spring_blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/api")
 public class PostController {
 
@@ -23,35 +21,36 @@ public class PostController {
     private final PostService postService;
 
 
-    // 리스트 조회
-//     @GetMapping("/")
-//     public List<Post> getList() {
-//         return postRepository.findAll();
-//     }
+    // 전체 조회
+    // @GetMapping("/")
+    // public List<Post> getList() {
+    //     return postRepository.findAll();
+    // }
 
 
-    // 유저별 리스트 조회
-     @GetMapping("/list")
-     public List<Post> getList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long userId = userDetails.getUser().getId();
-        return postService.getPosts(userId);
-     }
+    // 작성 페이지
+    @GetMapping("/write")
+    public String writePage() {
+        return "write";
+    }
 
 
     // 작성
-    @PostMapping("/post")
-    public Post writePost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("/setPost")
+    public String writePost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getId();
-        return postService.writePost(requestDto, userId);
+        postService.writePost(requestDto, userId);
+        return "redirect:/";
     }
 
 
     // 상세페이지 조회
-    @GetMapping("/post/{id}")
-    public Optional<Post> getPost(@PathVariable Long id) {
-        return postRepository.findById(id);
+    @GetMapping("/detail")
+    public String getPost(@RequestParam(required = false) Long id, Model model) {
+        Post post = postRepository.findById(id).orElse(null);
+        model.addAttribute("post", post);
+        return "post";
     }
-
 
 
     // 수정
@@ -62,10 +61,10 @@ public class PostController {
     }
 
     // 삭제
-    @DeleteMapping("/delpost/{id}")
-    public Long deletePost(@PathVariable Long id) {
+    @DeleteMapping("/post/{id}")
+    public String deletePost(@PathVariable Long id) {
         postRepository.deleteById(id);
-        return id;
+        return "/";
     }
 
 }

@@ -4,15 +4,12 @@ package com.soulikk.spring_blog.service;
 import com.soulikk.spring_blog.model.dto.PostRequestDto;
 import com.soulikk.spring_blog.model.entity.Post;
 import com.soulikk.spring_blog.model.repository.PostRepository;
-import com.soulikk.spring_blog.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +21,11 @@ public class PostService {
     @Transactional
     public List<Post> getPosts(Long userId) {
         return postRepository.findAllByUserId(userId);
+    }
+
+    @Transactional
+    public Optional<Post> getPost(Long id) {
+        return postRepository.findById(id);
     }
 
 
