@@ -7,13 +7,8 @@ import com.soulikk.spring_blog.security.UserDetailsImpl;
 import com.soulikk.spring_blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -53,6 +48,12 @@ public class MainController {
     public Long uptPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
         postService.updatePost(id, postRequestDto);
         return id;
+    }
+
+    @GetMapping("/api/getUserInfo")
+    public Long getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
+        return userId;
     }
 
 }

@@ -55,7 +55,7 @@
 <body>
 <div>
     <nav class="bg-dark d-flex align-items-center px-3">
-        <div class="text-white" type="button" onclick="location.href='/'">KMS BLOG</div>
+        <div class="text-white" type="button" onclick="location.href='/'" onsubmit="return chkLogin()">KMS BLOG</div>
     </nav>
     <div class="content-wrapper">
         <form action="/user/login" method="post">
@@ -84,6 +84,22 @@
         </form>
     </div>
 </div>
+<script>
+    function chkLogin() {
 
+        let email = $("#email").val();
+        let username = $("#username").val();
+        let password = $("#password").val();
+
+        if (username == '') {
+            alert('이름을 입력해주세요.');
+            return false;
+        }
+        if (password == '') {
+            alert('비밀번호를 입력해주세요.');
+            return false;
+        }
+    }
+</script>
 </body>
 </html>

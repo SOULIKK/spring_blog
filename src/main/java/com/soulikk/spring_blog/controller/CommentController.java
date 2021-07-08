@@ -19,7 +19,8 @@ public class CommentController {
 
 
     @GetMapping("/api/comments")
-    public List<Comment> getComments(@RequestParam(value = "post_id") Long post_id) {
+    public List<Comment> getComments(@RequestParam(value = "post_id") Long post_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUser().getId();
         return commentRepository.findByPostIdOrderByModifiredAtDesc(post_id);
     }
 

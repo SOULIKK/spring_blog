@@ -8,6 +8,7 @@ import com.soulikk.spring_blog.model.repository.CommentRepository;
 import com.soulikk.spring_blog.model.repository.PostRepository;
 
 
+import com.soulikk.spring_blog.security.UserDetailsImpl;
 import com.soulikk.spring_blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -31,16 +33,18 @@ public class PostController {
 
     private final PostService postService;
 
-
+    // 리스트
     @GetMapping("/")
-    public String getList(Model model, @PageableDefault(size = 6) Pageable pageable) {
+    public String getList(Model model, @PageableDefault(size = 6) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         // model.addAttribute("posts", postService.getPostsAll());
+        Long userId = userDetails.getUser().getId();
         Page<Post> posts = postRepository.findAll(pageable);
         int startPage = Math.max(1, posts.getPageable().getPageNumber() - 4);
         int endPage = Math.min(posts.getTotalPages(), posts.getPageable().getPageNumber() + 4);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("posts", posts);
+        model.addAttribute("userId", userId);
         return "index";
     }
 

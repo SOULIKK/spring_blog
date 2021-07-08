@@ -53,7 +53,7 @@
     </nav>
     <div class="content-wrapper">
         <div class="content col-lg-6 m-auto bg-white px-4">
-            <form action="/user/signup" method="post">
+            <form action="/user/signup" method="post" onsubmit="return chkSignUp()">
                 <br>
                 <h3 class="text-center fw-bold py-4">회원가입</h3>
                 <br>
@@ -71,7 +71,7 @@
                 <div class="form-group my-3">
                 </div>
                     <label>Check Password</label>
-                    <input class="form-control" type="password" autocomplete="off">
+                    <input class="form-control" id="password2" type="password" autocomplete="off">
                 </div>
                 <br>
                 <div class="form-group my-3">
@@ -85,18 +85,24 @@
 </div>
 <script>
 
-    function signUp() {
+    function chkSignUp() {
 
         let email = $("#email").val();
         let username = $("#username").val();
         let password = $("#password").val();
+        let password2 = $("#password2").val();
 
-        if (username == '') {
-            alert('이름을 입력해주세요.');
+        if (password != password2) {
+            alert('비밀번호가 일치하지 않습니다.');
             return false;
         }
         if (email == '') {
             alert('이메일을 입력해주세요.');
+            return false;
+        }
+
+        if (username == '') {
+            alert('이름을 입력해주세요.');
             return false;
         }
         if (password == '') {
@@ -104,22 +110,6 @@
             return false;
         }
 
-        let data = {
-            'email': email,
-            'username': username,
-            'password': password
-        }
-
-        $.ajax({
-            type: 'POST',
-            url: '/user/signup',
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function(res) {
-                // alert('회원가입이 완료됐습니다.');
-                location.reload();
-            }
-        });
     }
 
     function login() {
