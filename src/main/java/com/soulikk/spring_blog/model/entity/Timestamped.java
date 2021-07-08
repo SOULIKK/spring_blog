@@ -1,5 +1,6 @@
 package com.soulikk.spring_blog.model.entity;
 
+import com.soulikk.spring_blog.model.dto.PostRequestDto;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

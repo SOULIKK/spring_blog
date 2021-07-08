@@ -12,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query(value = "SELECT * FROM comment c WHERE c.postId = :postId order by modified_at desc", nativeQuery = true)
-    List<Comment> findByPostIdOrderByModifiredAtDesc(@Param(value = "postId") Long postId);
+    @Query(value = "SELECT * FROM comment c WHERE c.post_id = :post_id order by modified_at desc", nativeQuery = true)
+    List<Comment> findByPostIdOrderByModifiredAtDesc(@Param(value = "post_id") Long post_id);
 }
