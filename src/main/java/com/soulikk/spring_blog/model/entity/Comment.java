@@ -26,16 +26,13 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String commentContent;
 
-    public Comment(CommentRequestDto commentRequestDto) {
+    public Comment(CommentRequestDto commentRequestDto, String username) {
         this.id = commentRequestDto.getId();
         this.postId = commentRequestDto.getPostId();
-        this.username = commentRequestDto.getUsername();
+//        this.username = commentRequestDto.getUsername();
+        this.username = username;
         this.commentContent = commentRequestDto.getCommentContent();
     }
 
-    public void updateComment(CommentRequestDto commentRequestDto) {
-        this.id = commentRequestDto.getId();
-        this.username = commentRequestDto.getUsername();
-        this.commentContent = commentRequestDto.getCommentContent();
-    }
+
 }

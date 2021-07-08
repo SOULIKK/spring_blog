@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>List</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -15,9 +16,11 @@
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+
     * {
         font-family: 'Do Hyeon', sans-serif;
     }
+
     .content-wrapper {
         height: 93vh;
         background: #f5f5f5;
@@ -32,20 +35,24 @@
         height: 100%;
         overflow: auto;
     }
+
     .post-conetnt {
         height: 300px;
         overflow: auto;
         border-radius: .75rem;
         border: 1px solid #ebebeb;
     }
+
     .comment-wrapper {
         background: #f5f5f5;
         border-radius: .5rem;
     }
+
     .comment {
         background: #fff;
         border-radius: .5rem;
     }
+
     .comment > div:last-child {
         text-align: right;
     }
@@ -61,30 +68,35 @@
             <div>
                 <h3 th:text="${post.title}" class="my-4 text-center text-primary fw-bold"></h3>
                 <br>
-<!--                <div th:text="${post.username}" class="text-right"></div>-->
+<!--                 <div th:text="${post.username}" class="text-right"></div>-->
                 <div th:text="${post.content}" class="my-4 p-3 post-conetnt"></div>
             </div>
             <br>
             <h4 class="d-flex align-items-center justify-content-between pb-1">
                 <div class="mr-3 pr-4">댓글</div>
-                <button type="button" class="btn btn-outline-dark py-0 px-1" data-bs-toggle="modal" data-bs-target="#commentModal">
+                <button type="button" class="btn btn-outline-dark py-0 px-1" data-bs-toggle="modal"
+                        data-bs-target="#commentModal">
                     <i class="fa fa-comment"></i> 댓글작성
                 </button>
 
-                <!-- 댓글 폼 -->
-                <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+
+                <!-- <h1 th:text="${comment.commentContent}"></h1>-->
+                <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel"
+                     aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="commentModalLabel">댓글 작성</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <textarea class="form-control w-100" name="comment" id="comment" rows="7"></textarea>
+                                    <input type="hidden" id="postId" th:value="${post.id}">
+                                    <textarea class="form-control w-100" name="commentContent" id="commentContent" rows="7"></textarea>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-primary mt-2 w-100">저장</button>
+                                    <button type="button" class="btn btn-primary my-3 w-100" th:onclick="|javascript:setComment(${post.id})|">저장</button>
                                 </div>
                             </div>
                         </div>
@@ -97,41 +109,9 @@
             <div class="comment-wrapper p-2">
                 <table class="w-100">
                     <colgroup>
-                        <col width="50%">
-                        <col width="50%">
+                        <col width="100%">
                     </colgroup>
-                    <tbody>
-
-                        <!-- 내 댓글 -->
-                        <tr>
-                            <td></td>
-                            <td>
-                                <div class="comment p-2">
-                                    <div class="d-flex align-items-center justify-content-between pb-2">
-                                        <div class="fw-bold">작성자</div>
-                                        <a class="btn btn-outline-dark py-0 px-1">
-                                            <i class="fa fa-trash"></i> 삭제
-                                        </a>
-                                    </div>
-                                    <div>내용</div>
-                                    <div>2021-07-07</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- // 내 댓글 -->
-
-                        <!-- 다른사람 댓글 -->
-                        <tr>
-                            <td>
-                                <div class="comment p-1">
-                                    <div class="fw-bold pb-2">작성자</div>
-                                    <div>내용</div>
-                                    <div>2021-07-07</div>
-                                </div>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <!-- // 다른사람 댓글 -->
+                    <tbody id="comment-list">
 
 
                     </tbody>
@@ -140,5 +120,62 @@
         </div>
     </div>
 </div>
+<script>
+    function setComment(postId) {
+
+        let commentContent = $("#commentContent").val();
+
+        let data = {
+            'commentContent': commentContent,
+            'postId': postId
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/api/setComment',
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function () {
+                location.reload();
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        setTimeout(function(){
+            getComment();
+        },200);
+    })
+
+    function getComment() {
+
+
+        let postId = location.href.split("?id=")[1];
+        $.ajax({
+            type: 'GET',
+            url: `/api/comments`,
+            data: {"postId": postId},
+            success: function(res) {
+                for (let i = 0; i < res.length; i++) {
+                    temp = `<tr>
+                                <td>
+                                    <div class="comment p-2">
+                                        <div class="d-flex align-items-center justify-content-between pb-2">
+                                            <div class="fw-bold">${res[i][username]}</div>
+                                            <a class="btn btn-outline-dark py-0 px-1">
+                                                <i class="fa fa-trash"></i> 삭제
+                                            </a>
+                                        </div>
+                                        <div>${res[i][commentContent]}</div>
+                                        <div>${res[i][modifiedAt]}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                    `;
+                    $("#comment-list").append(temp);
+                }
+            }
+        })
+    }
+</script>
 </body>
 </html>

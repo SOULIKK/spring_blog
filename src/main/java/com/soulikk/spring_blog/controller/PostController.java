@@ -3,8 +3,10 @@ package com.soulikk.spring_blog.controller;
 
 import com.soulikk.spring_blog.model.dto.PostRequestDto;
 import com.soulikk.spring_blog.model.entity.Post;
+import com.soulikk.spring_blog.model.repository.CommentRepository;
 import com.soulikk.spring_blog.model.repository.PostRepository;
 import com.soulikk.spring_blog.security.UserDetailsImpl;
+import com.soulikk.spring_blog.service.CommentService;
 import com.soulikk.spring_blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ public class PostController {
 
     private final PostRepository postRepository;
     private final PostService postService;
+
 
 
     // 전체 조회
@@ -49,16 +52,20 @@ public class PostController {
     public String getPost(@RequestParam(required = false) Long id, Model model) {
         Post post = postRepository.findById(id).orElse(null);
         model.addAttribute("post", post);
+
+        // List<Comment> comments = commentRepository.findByPostId(id);
+        // model.addAttribute("comments", comments);
+
         return "post";
     }
 
 
     // 수정
-    @PostMapping("/uptPost/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
-        postService.updatePost(id, requestDto);
-        return id;
-    }
+//    @PostMapping("/uptPost/{id}")
+//    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
+//        postService.updatePost(id, requestDto);
+//        return id;
+//    }
 
     // 삭제
     @DeleteMapping("/post/{id}")
@@ -66,5 +73,6 @@ public class PostController {
         postRepository.deleteById(id);
         return "/";
     }
+
 
 }

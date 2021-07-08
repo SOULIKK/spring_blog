@@ -1,6 +1,7 @@
 package com.soulikk.spring_blog.model.entity;
 
 
+import com.soulikk.spring_blog.model.dto.CommentRequestDto;
 import com.soulikk.spring_blog.model.dto.PostRequestDto;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Post extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -31,8 +32,4 @@ public class Post {
         this.userId = userId;
     }
 
-    public void update(PostRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-    }
 }

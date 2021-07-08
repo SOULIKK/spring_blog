@@ -17,15 +17,15 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+
+    public List<Post> getPostsAll() {
+        return postRepository.findAll();
+    }
+
     // 조회 (회원 아이디)
     @Transactional
     public List<Post> getPosts(Long userId) {
         return postRepository.findAllByUserId(userId);
-    }
-
-    @Transactional
-    public Optional<Post> getPost(Long id) {
-        return postRepository.findById(id);
     }
 
 
@@ -39,14 +39,14 @@ public class PostService {
 
 
     // 수정
-    @Transactional
-    public Long updatePost(Long id, PostRequestDto requestDto) {
-        Post post = postRepository.findById(id).orElseThrow (
-                () -> new IllegalArgumentException("존재하지 않는 포스팅입니다.")
-        );
-        post.update(requestDto);
-        return post.getId();
-    }
+//    @Transactional
+//    public Long updatePost(Long id, PostRequestDto requestDto) {
+//        Post post = postRepository.findById(id).orElseThrow (
+//                () -> new IllegalArgumentException("존재하지 않는 포스팅입니다.")
+//        );
+//        post.update(requestDto);
+//        return post.getId();
+//    }
 
 
 }

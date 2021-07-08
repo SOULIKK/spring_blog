@@ -1,7 +1,10 @@
 package com.soulikk.spring_blog.model.repository;
 
+import com.soulikk.spring_blog.model.entity.Comment;
 import com.soulikk.spring_blog.model.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

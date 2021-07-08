@@ -34,6 +34,11 @@
         height: 93vh;
         overflow: auto;
     }
+    .kakao-login {
+        background: #ffff66 !important;
+        border-color: #ffff66 !important;
+        color: #000 !important;
+    }
 </style>
 <body>
 <div>
@@ -55,6 +60,10 @@
                 </div>
                 <br>
                 <div class="form-group my-3">
+                    <button type="button" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=91ca08833b684a5e061c2a5b0f7e2ef8&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code';" class="btn btn-primary w-100 my-2 kakao-login">
+                        <i class="fa fa-comment"></i>
+                        카카오 로그인
+                    </button>
                     <button type="submit" class="btn btn-primary w-100 my-2">로그인</button>
                     <button type="button" class="btn btn-outline-primary w-100 my-2" onclick="location.href='/user/signup'">회원가입</button>
                 </div>
@@ -64,7 +73,9 @@
 </div>
 <script>
 
-
+    function kakao() {
+        location.href = '';
+    }
 
 </script>
 </body>

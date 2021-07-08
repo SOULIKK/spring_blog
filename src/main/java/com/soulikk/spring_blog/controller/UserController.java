@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,6 +42,16 @@ public class UserController {
     @PostMapping("/signup")
     public String registerUser(SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
+        return "redirect:/";
+    }
+
+
+
+    @GetMapping("/kakao/callback")
+    public String kakaoLogin(String code) {
+        // authorizedCode: 카카오 서버로부터 받은 인가 코드
+        userService.kakaoLogin(code);
+
         return "redirect:/";
     }
 
