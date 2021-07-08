@@ -78,6 +78,14 @@
     function setPost() {
         let title = $("#title").val();
         let content = $("#content").val();
+        if (title == "") {
+            alert("제목을 입력해주세요.");
+            return false;
+        }
+        if (content == "") {
+            alert("내용을 입력해주세요.");
+            return false;
+        }
         let data = {
             'title': title,
             'content': content

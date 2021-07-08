@@ -27,7 +27,8 @@ public class CommentController {
     @PostMapping("/api/setComment")
     public Comment setComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUser().getUsername();
-        Comment comment = new Comment(commentRequestDto, username);
+        Long userId = userDetails.getUser().getId();
+        Comment comment = new Comment(commentRequestDto, username, userId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
         if (principal.equals("anonymousUser")) {

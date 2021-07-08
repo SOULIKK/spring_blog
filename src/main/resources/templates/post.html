@@ -130,6 +130,7 @@
         setTimeout(function () {
             getPost(id);
             getComment(id);
+            getUserInfo();
         }, 10);
     })
 
@@ -165,6 +166,7 @@
                                         <div>
                                             <label>내용</label>
                                             <textarea class="mt-2 mb-4 p-3 w-100 post-conetnt" id="uptContent" rows="10">${res.content}</textarea>
+                                            <input type="hidden" id="commentUserId" value="${res.userId}">
                                         </div>
                                         <br>
                                         <div class="text-end">
@@ -183,11 +185,24 @@
     }
 
     function getUptForm(id) {
+        let onlineUserId = $("#onlineUserId").val();
+        let commentUserId = $("#commentUserId").val();
+        if (onlineUserId != commentUserId) {
+            alert("권한이 없습니다.");
+            return false;
+        }
         $("#original").addClass("d-none");
         $("#update-form").removeClass("d-none");
     }
 
     function uptPost(id) {
+        let onlineUserId = $("#onlineUserId").val();
+        let commentUserId = $("#commentUserId").val();
+        if (onlineUserId != commentUserId) {
+            alert("권한이 없습니다.");
+            return false;
+        }
+
         let title = $("#uptTitle").val();
         let content = $("#uptContent").val();
         if (title == '' || content == '') {
@@ -231,6 +246,7 @@
                                             </div>
                                             <div>${res[i].commentContent}</div>
                                             <div>${res[i].modifiedAt}</div>
+                                            <input type="hidden" id="commentUserId" value="${res[i].userId}">
                                         </div>
                                     </td>
                                 </tr>
@@ -246,6 +262,10 @@
 
         let id = location.href.split("?id=")[1];
         let commentContent = $("#commentContent").val();
+
+        if (commentContent == "") {
+            alert("내용을 입력해주세요".);
+        }
 
         let data = {
             'commentContent': commentContent,
@@ -264,6 +284,13 @@
 
     // 댓글 삭제
     function delComment(id) {
+        let onlineUserId = $("#onlineUserId").val();
+        let commentUserId = $("#commentUserId").val();
+        if (onlineUserId != commentUserId) {
+            alert("권한이 없습니다.");
+            return false;
+        }
+
         $.ajax({
             type: "DELETE",
             url: `/api/delComment/${id}`,
@@ -276,8 +303,19 @@
 
     function getUserInfo() {
 
+        $.ajax({
+            type: "GET",
+            url: `/api/getUserInfo`,
+            success: function(userId) {
+                console.log(userId);
+                let user = `<input type="hidden" id="onlineUserId" value="${userId}">`;
+                $("#content-wrapper").append(user);
+            }
+        })
+
     }
 
 </script>
+
 </body>
 </html>

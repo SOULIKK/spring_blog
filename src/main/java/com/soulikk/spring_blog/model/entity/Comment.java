@@ -21,16 +21,21 @@ public class Comment extends Timestamped {
     private Long postId;
 
     @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String commentContent;
 
-    public Comment(CommentRequestDto commentRequestDto, String username) {
+    public Comment(CommentRequestDto commentRequestDto, String username, Long userId) {
         this.id = commentRequestDto.getId();
         this.postId = commentRequestDto.getPostId();
 //        this.username = commentRequestDto.getUsername();
+        this.userId = userId;
         this.username = username;
+
         this.commentContent = commentRequestDto.getCommentContent();
     }
 
