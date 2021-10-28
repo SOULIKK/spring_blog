@@ -36,7 +36,8 @@ public class PostController {
 
     @GetMapping("/write")
     public String write() {
-        return "write";
+//        return "write";
+        return "editor";
     }
 
 }
