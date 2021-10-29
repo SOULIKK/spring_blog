@@ -2,6 +2,7 @@ package com.soulikk.spring_blog.dto;
 
 
 
+import com.soulikk.spring_blog.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class PostDto {
     private String title;
 
     private String content;
+
+    private User user;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
