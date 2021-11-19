@@ -1,2 +1,16 @@
-package com.soulikk.spring_blog.dto;public class ImageDto {
+package com.soulikk.spring_blog.dto;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ImageDto {
+
+    private Long imageId;
 }
