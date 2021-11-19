@@ -1,50 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Write</title>
-    <script th:src="@{/js/scripts.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    <title>Example</title>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+    <!-- include summernote css/js-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 </head>
+
 <body>
-
-<div class="col-lg-8 col-md-12 mx-auto">
-    <form th:action="@{/write}" th:method="post">
-        <h2 class="text-center py-5">글 작성</h2>
-        <div class="py-3 pt-4">
-            <label>제목</label>
-            <input type="text" class="form-control" name="title">
-        </div>
-        <div class="py-3">
-            <label>내용</label>
-            <textarea class="form-control" id="summernote" name="content"
-                      placeholder="content" maxlength="140" rows="10"></textarea>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-success w-100">저장</button>
-        </div>
-    </form>
-</div>
-
+<form id="articleForm" role="form" th:action="@{/write}" method="post">
+    <br style="clear: both">
+    <h3 style="margin-bottom: 25px;">Article Form</h3>
+    <div class="form-group">
+        <input type="text" class="form-control" id="title" name="title" placeholder="title" required>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" id="summernote" name="content" placeholder="content" maxlength="140" rows="7"></textarea>
+    </div>
+    <button type="submit" id="submit" name="submit" class="btn btn-primary pull-right">Submit Form
+    </button>
+</form>
 <script>
     $(document).ready(function () {
         $('#summernote').summernote({
-            placeholder: '내용을 입력해주세요.',
-            tabsize: 2,
-            height: 200,
-            callbacks : {
-                onImageUpload : function(files, editor, welEditable) {
+            height: 300,
+            minHeight: null,
+            maxHeight: null,
+            focus: true,
+            callbacks: {
+                onImageUpload: function (files, editor, welEditable) {
                     for (var i = 0; i < files.length; i++) {
                         sendFile(files[i], this);
                     }
@@ -54,25 +43,27 @@
     });
 
     function sendFile(file, el) {
-        var formData = new FormData();
-        formData.append('file', file);
+        const form_data = new FormData();
+        form_data.append('file', file);
         $.ajax({
-            data: formData,
+            data: form_data,
             type: "POST",
             url: '/image',
             cache: false,
             contentType: false,
-            enctypeL: 'multipart/form-data',
+            enctype: 'multipart/form-data',
             processData: false,
             success: function(url) {
+                alert(url);
                 $(el).summernote('insertImage', url, function($image) {
-                    $image.css('width', "50%");
+                    $image.css('width', "25%");
                 });
             }
-        })
-
+        });
     }
-
 </script>
 </body>
+
+
+
 </html>
