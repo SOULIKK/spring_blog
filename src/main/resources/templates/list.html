@@ -13,17 +13,14 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
           rel="stylesheet" type="text/css"/>
     <link href="css/styles.css" rel="stylesheet"/>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="list.html">MinSeong Kim</a>
-        <a class="navbar-brand" href="list.html">Start Bootstrap</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            Menu
             <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -35,6 +32,7 @@
         </div>
     </div>
 </nav>
+
 
 <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
@@ -48,16 +46,42 @@
     </div>
 </header>
 
+<div class="container px-4 px-lg-2 px-md-0">
+    <div class="d-flex row">
 
-<main class="mb-4">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-
+        <a th:each="post : ${posts.dtoList}" class="card col-md-3 col-md-4 col-sm-6 h-auto border-0 p-1"
+           style="cursor: pointer;" th:onclick="goPost([[${post.postId}]])">
+            <div class="card-body">
+                <img th:if="${post.imageDtoList.size() > 0 }" th:src="|/image/${post.imageDtoList[0].imageId }|" alt=""
+                     class="w-100" style="height: 200px;">
+                <h4 th:text="${post.title}"></h4>
+                <span th:text="${post.createdAt}"></span>
             </div>
-        </div>
+        </a>
+
+        <ul class="pagination h-100 justify-content-center align-items-center">
+            <li class="page-item " th:if="${posts.prev}">
+                <a class="page-link"
+                   th:href="@{/board/list(page = ${posts.start -1}, type = ${pageRequestDto.type}, keyword = ${pageRequestDto.keyword})}"
+                   tabindex="-1">
+                    <
+                </a>
+            </li>
+            <li th:class=" 'page-item ' + ${posts.page == page?'active':''}" th:each="page: ${posts.pageList}">
+                <a class="page-link"
+                   th:href="@{/board/list(page = ${page}, type = ${pageRequestDto.type}, keyword = ${pageRequestDto.keyword})}">
+                    [[${page}]]
+                </a>
+            </li>
+            <li class="page-item" th:if="${posts.next}">
+                <a class="page-link"
+                   th:href="@{/board/list(page=${posts.end + 1}, type=${pageRequestDto.type}, keyword = ${pageRequestDto.keyword})}">
+                    >
+                </a>
+            </li>
+        </ul>
     </div>
-</main>
+</div>
 
 <footer class="border-top">
     <div class="container px-lg-5">
@@ -86,11 +110,15 @@
         </div>
     </div>
 </footer>
-
+<!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
 <script src="js/scripts.js"></script>
 
-
+<script>
+    function goPost(_postId) {
+        location.href = "/post/" + _postId;
+    }
+</script>
 </body>
-
 </html>
